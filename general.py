@@ -21,7 +21,7 @@ def create_data_files(project_name, base_url):
 
 def write_file(file_name, data, mode):
     with open(file_name, mode) as outfile:
-        outfile.write(data,'\n')
+        outfile.write(data+'\n')
 
 
 def file_to_set(file_name):

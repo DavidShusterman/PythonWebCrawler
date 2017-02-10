@@ -50,12 +50,12 @@ class Spider:
         :return: set of links
         """
         html_string = ''
+        finder = LinkFinder(Spider.base_url, page_url)
         try:
             response = urlopen(page_url)
-            if response.getheader('Content-Type') == 'text/html':
+            if response.headers['Content-Type'] == 'text/html':
                 html_bytes = response.read()
                 html_string = html_bytes.decode("utf-8")
-            finder = LinkFinder(Spider.base_url, page_url)
             finder.feed(html_string)
 
         except Exception as e:
@@ -65,15 +65,14 @@ class Spider:
         finally:
             return finder.page_links()
 
-
-
-    def add_links_to_queue(self,links):
+    @staticmethod
+    def add_links_to_queue(links):
         for url in links:
-            if self.url_need_to_be_crawled(url):
+            if Spider.url_need_to_be_crawled(url):
                 Spider.queue.add(url)
 
-
-    def url_need_to_be_crawled(self, url):
+    @staticmethod
+    def url_need_to_be_crawled(url):
         if url in Spider.queue:
             return False
         if url in Spider.crawled:
@@ -84,5 +83,5 @@ class Spider:
 
     @staticmethod
     def update_files():
-        set_to_file(Spider.queue,Spider.queue_file)
-        set_to_file(Spider.crawled,Spider.crawled_file)
+        set_to_file(Spider.queue, Spider.queue_file)
+        set_to_file(Spider.crawled, Spider.crawled_file)
