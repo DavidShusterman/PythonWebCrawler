@@ -23,4 +23,4 @@ class LinkFinder(HTMLParser):
         return self._links
 
 
-finder = LinkFinder()
+

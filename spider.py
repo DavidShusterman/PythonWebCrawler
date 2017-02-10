@@ -64,3 +64,25 @@ class Spider:
 
         finally:
             return finder.page_links()
+
+
+
+    def add_links_to_queue(self,links):
+        for url in links:
+            if self.url_need_to_be_crawled(url):
+                Spider.queue.add(url)
+
+
+    def url_need_to_be_crawled(self, url):
+        if url in Spider.queue:
+            return False
+        if url in Spider.crawled:
+            return False
+        if Spider.domain_name not in url:
+            return False
+        return True
+
+    @staticmethod
+    def update_files():
+        set_to_file(Spider.queue,Spider.queue_file)
+        set_to_file(Spider.crawled,Spider.crawled_file)
